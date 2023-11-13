@@ -31,19 +31,21 @@ def cosine_similarity(x, y):
 
 
 # Function to Load Glove Embeddings
-def load_glove_embeddings(glove_path="Data/embeddings.pkl"):
+def load_glove_embeddings(glove_path="glove.6B.50d.txt"):
     """
     First step: Download the 50d Glove embeddings from here - https://www.kaggle.com/datasets/adityajn105/glove6b50d
     Second step: Format the glove embeddings into a dictionary that goes from a word to the 50d embedding.
     Third step: Store the 50d Glove embeddings in a pickle file of a dictionary.
     Now load that pickle file back in this function
     """
-    embeddings = format_glove_embeddings("archive/glove.6B.50d.txt")
-    with open(glove_path, "wb") as f:
-        pickle.dump(embeddings, f)
+    embeddings_dict = {}
 
-    with open(glove_path, "rb") as f:
-        embeddings_dict = pickle.load(f)
+    with open(glove_path, "r", encoding="utf-8") as file:
+        for line in file:
+            values = line.split()
+            word = values[0]
+            embedding = [float(val) for val in values[1:]]
+            embeddings_dict[word] = embedding
 
     return embeddings_dict
 
